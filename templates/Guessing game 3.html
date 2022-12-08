@@ -2,9 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Guessing game</title>
 </head>
 <body>
-
+    <form action="/gg3" method="POST">
+        {% if mtd == 'GET' %}
+        <p>{{invitation}}</p>
+        <label>
+            <button type="submit">Start!</button>
+        </label>
+        {% elif mtd == 'POST' %}
+        <p>{{guess}}</p>
+        <label>
+            <button type="submit" name="info" value="correct">Correct</button>
+            <button type="submit" name="info" value="too small">Too small</button>
+            <button type="submit" name="info" value="too big">Too big</button>
+        </label>
+        {% endif %}
+    </form>
 </body>
 </html>
