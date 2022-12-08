@@ -12,11 +12,14 @@
             <button type="submit">Start!</button>
         </label>
         {% elif mtd == 'POST' %}
-        <p>{{guess}}</p>
+        <p>{{guess_str}}</p>
         <label>
             <button type="submit" name="info" value="correct">Correct</button>
             <button type="submit" name="info" value="too small">Too small</button>
             <button type="submit" name="info" value="too big">Too big</button>
+            <input type="hidden" name="minimum" value="0">
+            <input type="hidden" name="maximum" value="1000">
+            <input type="hidden" name="guess" value="{{guess}}">
         </label>
         {% endif %}
     </form>
