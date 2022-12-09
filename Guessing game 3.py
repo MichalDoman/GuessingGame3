@@ -5,33 +5,39 @@ app = Flask(__name__)
 
 @app.route('/gg3', methods=['GET', 'POST'])
 def main():
-    minimum = 0
-    maximum = 1000
-    attempts = 10
-    attempt = 1
-    invitation_str = f'Computer: Think of a number between {minimum} and {maximum}, ' \
-                     f'and I will try to guess it in {attempts} tries!'
+    if request.method == 'GET':
+        minimum = 0
+        maximum = 1000
+        attempts = 10
+        invitation_str = f'Computer: Think of a number between {minimum} and {maximum}, ' \
+                         f'and I will try to guess it in {attempts} tries!'
+        return render_template('Guessing game 3.html', invitation=invitation_str, mtd='GET')
 
-    if request.method == 'POST':
-        minimum = int(request.form.get('minimum', 0))
-        maximum = int(request.form.get('maximum', 1000))
-        guess = int(request.form.get('guess', 500))
-        guess_str = f'Computer: My guess number {attempt}, is "{guess}"'
+    elif request.method == 'POST':
+        attempts = 10
+        attempt = int(request.form.get('attempt', 1))
+        min = int(request.form.get('minimum', 0))
+        max = int(request.form.get('maximum', 1000))
+        guess = int((max - min) / 2) + min
+
         user_info = request.form.get("info")
-
         if user_info == 'correct':
-            guess_str = 'Computer: Yeah! I am always the best!'
+            return 'Computer: Yeah! I am always the best!'
         elif user_info == 'too small':
-            minimum = guess
+            min = guess
             attempt += 1
         elif user_info == 'too big':
-            maximum = guess
+            max = guess
             attempt += 1
-        guess = int((maximum - minimum) / 2) + minimum
 
-        return render_template('Guessing game 3.html', mtd='POST', guess=guess, guess_str=guess_str)
+        if attempt > attempts:
+            return 'Computer: Noooo! I ran out of tries! You must have been cheating!'
 
-    return render_template('Guessing game 3.html', invitation=invitation_str, mtd='GET')
+        guess = int((max - min) / 2) + min
+        guess_str = f'Computer: My guess number {attempt}, is "{guess}"'
+
+        return render_template('Guessing game 3.html', mtd='POST', minimum=min, maximum=max,
+                               attempt=attempt, guess_str=guess_str)
 
 
 if __name__ == '__main__':
